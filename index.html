@@ -1,593 +1,547 @@
-html_code = """<!DOCTYPE html>
+html_content = """<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>탑수면 - 맞춤형 수면 효율 & 피로 회복 케어</title>
+    <title>탑수면 - 수면 효율 및 생체리듬 개선</title>
     <style>
         :root {
-            --bg-primary: #0F172A;
-            --bg-secondary: #1E293B;
-            --bg-card: #334155;
-            --accent-blue: #38BDF8;
-            --accent-indigo: #818CF8;
-            --accent-moon: #FDE047;
-            --text-main: #F8FAFC;
-            --text-muted: #94A3B8;
-            --border-color: #475569;
+            --bg-color: #0b132b;
+            --card-bg: #1c2541;
+            --card-hover: #232f54;
+            --accent-color: #48cae4;
+            --accent-hover: #00b4d8;
+            --text-main: #ffffff;
+            --text-sub: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg-primary);
+            background-color: var(--bg-color);
             color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
             line-height: 1.6;
-            padding-bottom: 60px;
         }
 
-        /* Header & Navigation */
         header {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--accent-blue);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .logo span {
-            color: var(--accent-moon);
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 1.5rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        nav a:hover {
-            color: var(--accent-blue);
-        }
-
-        /* Container */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-        }
-
-        /* Hero Section */
-        .hero {
+            width: 100%;
+            max-width: 600px;
             text-align: center;
-            padding: 3rem 1rem 2rem;
+            padding: 30px 0 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
         }
 
-        .hero h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #38BDF8, #818CF8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        header h1 {
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .hero p {
-            font-size: 1.1rem;
+        header p {
             color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto 2rem;
-            word-break: keep-all;
+            font-size: 0.95rem;
+            margin-top: 6px;
         }
 
-        /* Interactive Calculator Card */
-        .calc-card {
-            background-color: var(--bg-secondary);
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-            margin-bottom: 4rem;
+            margin-bottom: 30px;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .intro-text {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-color);
         }
 
         .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            text-align: left;
+            margin-bottom: 20px;
         }
 
         .input-group label {
-            font-size: 0.95rem;
-            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
             color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
+            font-size: 0.95rem;
         }
 
-        .input-group input, .input-group select {
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
+        .time-select-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        select, input[type="number"] {
+            background-color: var(--input-bg);
             color: var(--text-main);
-            padding: 0.8rem 1rem;
-            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 8px;
             font-size: 1rem;
             outline: none;
             transition: border-color 0.2s;
         }
 
-        .input-group input:focus, .input-group select:focus {
-            border-color: var(--accent-blue);
+        select:focus, input[type="number"]:focus {
+            border-color: var(--accent-color);
         }
 
-        .btn-submit {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
-            color: #0F172A;
-            font-weight: 700;
-            font-size: 1.1rem;
-            padding: 1rem;
-            border: none;
-            border-radius: 12px;
+        select {
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ampm-select {
+            width: 80px;
+        }
+
+        .time-input-box {
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 0.5rem;
+            gap: 4px;
+            flex: 1;
         }
 
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(56, 189, 248, 0.3);
+        .time-input-box input, .time-input-box select {
+            width: 100%;
         }
 
-        /* Result Box */
-        .result-box {
-            display: none;
-            margin-top: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px dashed var(--border-color);
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-header {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent-moon);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .recommendation-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .rec-card {
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.25rem;
-            border-left: 4px solid var(--accent-blue);
-        }
-
-        .rec-card.highlight {
-            border-left-color: var(--accent-moon);
-            background-color: rgba(51, 65, 85, 0.9);
-        }
-
-        .rec-card h4 {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0.3rem;
-        }
-
-        .rec-card .time {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-        }
-
-        .rec-card p {
-            font-size: 0.85rem;
-            color: #CBD5E1;
-            word-break: keep-all;
-        }
-
-        .action-tips {
-            margin-top: 1.5rem;
-            background-color: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 12px;
-            padding: 1.25rem;
-            text-align: left;
-        }
-
-        .action-tips h4 {
-            color: var(--accent-blue);
+        .btn-primary {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: #0f172a;
+            border: none;
+            padding: 14px;
             font-size: 1.05rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 10px;
         }
 
-        .action-tips ul {
-            list-style: none;
-            padding-left: 0;
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
         }
 
-        .action-tips li {
-            font-size: 0.9rem;
-            color: #E2E8F0;
-            margin-bottom: 0.4rem;
-            position: relative;
-            padding-left: 1.2rem;
+        .btn-primary:active {
+            transform: scale(0.99);
         }
 
-        .action-tips li::before {
-            content: "•";
-            color: var(--accent-blue);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        /* Quality Section */
-        .section-title {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-
-        .section-title h2 {
-            font-size: 1.8rem;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-        }
-
-        .section-title p {
-            color: var(--text-muted);
+        .btn-secondary {
+            width: 100%;
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 12px;
             font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 15px;
         }
 
-        .guide-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
+        .btn-secondary:hover {
+            background-color: rgba(72, 202, 228, 0.1);
         }
 
-        .guide-card {
-            background-color: var(--bg-secondary);
+        /* Result Cards */
+        .result-box {
+            background-color: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            transition: transform 0.2s, border-color 0.2s;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
         }
 
-        .guide-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent-blue);
+        .result-box .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
         }
 
-        .icon-wrapper {
+        .result-box .value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .result-box .subtext {
+            font-size: 0.82rem;
+            color: var(--accent-color);
+            margin-top: 4px;
+        }
+
+        .highlight-box {
+            border-color: var(--accent-color);
+            background-color: rgba(72, 202, 228, 0.05);
+        }
+
+        /* Method Cards */
+        .method-card {
+            display: flex;
+            gap: 16px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            align-items: flex-start;
+        }
+
+        .method-icon {
+            font-size: 1.8rem;
+            background-color: var(--input-bg);
             width: 48px;
             height: 48px;
-            border-radius: 12px;
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            border-radius: 10px;
+            flex-shrink: 0;
         }
 
-        .guide-card h3 {
-            font-size: 1.15rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-main);
+        .method-content h3 {
+            font-size: 1rem;
+            color: var(--accent-color);
+            margin-bottom: 4px;
         }
 
-        .guide-card p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            word-break: keep-all;
+        .method-content p {
+            font-size: 0.88rem;
+            color: var(--text-sub);
+            line-height: 1.4;
         }
 
-        /* Footer */
         footer {
-            margin-top: 5rem;
-            border-top: 1px solid var(--border-color);
-            padding: 2rem 1rem;
+            margin-top: auto;
             text-align: center;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            header {
-                padding: 1rem;
-            }
-            .hero h1 {
-                font-size: 1.75rem;
-            }
-            .calc-card {
-                padding: 1.5rem 1rem;
-            }
+            padding: 20px 0;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo">
-            <span>🌙</span> 탑수면
-        </a>
-        <nav>
-            <a href="#calculator">수면 솔루션</a>
-            <a href="#guides">수면의 질 개선법</a>
-        </nav>
+        <h1>🌙 탑수면</h1>
+        <p>기존 라이프스타일을 유지하며 피로도를 최적화하는 맞춤 수면 케어</p>
     </header>
 
-    <div class="container">
-        <!-- Hero Section -->
-            <h1>현재 수면 패턴 그대로,<br>피로감만 싹 줄여드립니다</h1>
-            <p>억지로 밤 10시에 잘 필요 없습니다. 탑수면은 사용자의 현재 라이프스타일을 존중하면서, 수면 주기(90분) 맞춤 솔루션으로 개운한 아침을 선물합니다.</p>
-        </section>
+    <main class="container">
+        <!-- Page 1: 입력 페이지 -->
+        <div id="page-input" class="page active">
+            <h2 class="section-title">수면 패턴 입력</h2>
+            <p class="intro-text">
+                현재 수면 시간대를 유지하면서 생체리듬을 교정해 피로감을 극대화하여 낮춰드립니다.
+            </p>
 
-        <!-- Interactive Calculator Section -->
-        <section class="calc-card" id="calculator">
-            <div class="form-grid">
+            <form id="sleep-form" onsubmit="event.preventDefault(); calculateSleep();">
+                <!-- 취침 시간 입력 -->
                 <div class="input-group">
-                    <label for="bedTime">🌙 평소 잠드는 시간</label>
-                    <input type="time" id="bedTime" value="--:--">
-                </div>
-                <div class="input-group">
-                    <label for="wakeTime">☀️ 평소 기상하는 시간</label>
-                    <input type="time" id="wakeTime" value="--:--">
-                </div>
-                <div class="input-group">
-                    <label for="sleepLatency">💤 입면 소요 시간 (잠들 때까지)</label>
-                    <select id="sleepLatency">
-                        <option value="15" selected>약 15분 (평균)</option>
-                        <option value="30">약 30분</option>
-                        <option value="45">약 45분 이상</option>
-                    </select>
-                </div>
-            </div>
-
-            <button class="btn-submit" onclick="calculateSleep()">
-                <span>⚡</span> 수면 효율 개선하기
-            </button>
-
-            <!-- Results -->
-            <div class="result-box" id="resultBox">
-                <div class="result-header">
-                    ✨ 현재 패턴 기반 맞춤 처방
-                </div>
-                <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem; word-break: keep-all;" id="analysisSummary">
-                    분석 중...
-                </p>
-
-                <div class="recommendation-cards">
-                    <div class="rec-card highlight">
-                        <h4>최적 추천 취침 시간 (생체리듬 보존)</h4>
-                        <div class="time" id="recBedTime">01:15 AM</div>
-                        <p id="recBedTimeDesc">기상 시간을 바꾸지 않고 수면 주기(90분)에 딱 맞추어 깨어났을 때 피로감을 최소화하는 취침 시각입니다.</p>
-                    </div>
-                    <div class="rec-card">
-                        <h4>대안 취침 시간 (1주기 일찍)</h4>
-                        <div class="time" id="altBedTime">11:45 PM</div>
-                        <p>조금 더 피곤한 날, 생체리듬을 깨뜨리지 않고 1.5시간 더 수면을 취할 수 있는 시간입니다.</p>
+                    <label>평소 잠드는 시간 (취침 시간)</label>
+                    <div class="time-select-container">
+                        <select id="sleep-ampm" class="ampm-select">
+                            <option value="PM" selected>오후</option>
+                            <option value="AM">오전</option>
+                        </select>
+                        <div class="time-input-box">
+                            <input type="number" id="sleep-hour" list="hours-list" min="1" max="12" placeholder="시" value="11" required>
+                            <span>시</span>
+                        </div>
+                        <div class="time-input-box">
+                            <input type="number" id="sleep-min" list="minutes-list" min="0" max="59" step="5" placeholder="분" value="00" required>
+                            <span>분</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="action-tips">
-                    <h4>💡 패턴 변화 없이 피로만 줄이는 핵심 포인트</h4>
-                    <ul id="tipList">
-                        <!-- Dynamic tips will appear here -->
-                    </ul>
+                <!-- 기상 시간 입력 -->
+                <div class="input-group">
+                    <label>평소 일어나는 시간 (기상 시간)</label>
+                    <div class="time-select-container">
+                        <select id="wake-ampm" class="ampm-select">
+                            <option value="AM" selected>오전</option>
+                            <option value="PM">오후</option>
+                        </select>
+                        <div class="time-input-box">
+                            <input type="number" id="wake-hour" list="hours-list" min="1" max="12" placeholder="시" value="7" required>
+                            <span>시</span>
+                        </div>
+                        <div class="time-input-box">
+                            <input type="number" id="wake-min" list="minutes-list" min="0" max="59" step="5" placeholder="분" value="00" required>
+                            <span>분</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Datalists for select dropdown + text input flexibility -->
+                <datalist id="hours-list">
+                    <option value="1"></option><option value="2"></option><option value="3"></option>
+                    <option value="4"></option><option value="5"></option><option value="6"></option>
+                    <option value="7"></option><option value="8"></option><option value="9"></option>
+                    <option value="10"></option><option value="11"></option><option value="12"></option>
+                </datalist>
+
+                <datalist id="minutes-list">
+                    <option value="00"></option><option value="05"></option><option value="10"></option>
+                    <option value="15"></option><option value="20"></option><option value="25"></option>
+                    <option value="30"></option><option value="35"></option><option value="40"></option>
+                    <option value="45"></option><option value="50"></option><option value="55"></option>
+                </datalist>
+
+                <button type="submit" class="btn-primary">수면 효율 개선</button>
+            </form>
+        </div>
+
+        <!-- Page 2: 분석 결과 페이지 -->
+        <div id="page-result" class="page">
+            <h2 class="section-title">맞춤 수면 분석 결과</h2>
+
+            <div class="result-box">
+                <div class="label">현재 나의 총 수면 시간</div>
+                <div class="value" id="res-current-sleep">-</div>
+            </div>
+
+            <div class="result-box highlight-box">
+                <div class="label">피로를 최소화하는 권장 취침 시간 (현재 습관 기반)</div>
+                <div class="value" id="res-opt-sleep">-</div>
+                <div class="subtext">💡 기존 취침 시간에서 1시간 이내로 조율하여 90분 수면 주기(REM)에 맞춘 최적의 시간입니다.</div>
+            </div>
+
+            <div class="result-box">
+                <div class="label">목표 기상 시간 기준 권장 수면 옵션</div>
+                <div class="value" id="res-recommended-times" style="font-size: 1rem; font-weight: normal; margin-top: 6px;">-</div>
+                <div class="subtext">💡 렘(REM) 수면 주기(1.5시간) 종료 시점에 깨어나면 개운함을 느끼게 됩니다.</div>
+            </div>
+
+            <button class="btn-primary" onclick="showPage('page-methods')">다른 방법들 보기</button>
+            <button class="btn-secondary" onclick="showPage('page-input')">시간 다시 입력하기</button>
+        </div>
+
+        <!-- Page 3: 생체리듬 개선 방법 페이지 -->
+        <div id="page-methods" class="page">
+            <h2 class="section-title">생체리듬 & 수면 질 개선 가이드</h2>
+
+            <div class="method-card">
+                <div class="method-icon">☀️</div>
+                <div class="method-content">
+                    <h3>기상 후 15분 햇볕 쬐기</h3>
+                    <p>아침 햇빛은 멜라토닌 분비를 멈추고 생체 시계를 리셋합니다. 약 14~16시간 뒤 자연스러운 수면 유도에 도움을 줍니다.</p>
                 </div>
             </div>
-        </section>
 
-        <!-- Sleep Quality Improvement Section -->
-        <section id="guides">
-            <div class="section-title">
-                <h2>수면의 질을 한 단계 높이는 6가지 가이드</h2>
-                <p>수면 시간을 늘리지 못하더라도, 취침 환경과 작은 습관 조절로 깊은 수면(N3) 비중을 늘릴 수 있습니다.</p>
-            </div>
-
-            <div class="guide-grid">
-                <div class="guide-card">
-                    <div class="icon-wrapper">🌡️</div>
-                    <h3>침실 온·습도 골든타임</h3>
-                    <p>체온이 0.5~1℃ 떨어져야 멜라토닌이 활발히 분비됩니다. 침실 온도는 18~22℃, 습도는 50~60%를 유지해보세요.</p>
-                </div>
-
-                <div class="guide-card">
-                    <div class="icon-wrapper">☕</div>
-                    <h3>카페인 커트라인 (10시간 법칙)</h3>
-                    <p>카페인의 반감기는 생각보다 깁니다. 기상 후 최대 8~10시간 전까지만 커피나 차를 섭취하여 뇌의 아데노신 수용체를 보호하세요.</p>
-                </div>
-
-                <div class="guide-card">
-                    <div class="icon-wrapper">☀️</div>
-                    <h3>기상 직후 햇빛 5분 쬐기</h3>
-                    <p>아침 일찍 눈으로 들어오는 자연광은 밤 시간대 멜라토닌 분비 타이머를 정확하게 설정해주어 밤에 쉽게 잠들게 합니다.</p>
-                </div>
-
-                <div class="guide-card">
-                    <div class="icon-wrapper">📱</div>
-                    <h3>블루라이트 차단 & 간접 조명</h3>
-                    <p>자기 전 1시간 동안의 스마트폰 빛은 뇌를 낮으로 착각하게 만듭니다. 취침 1시간 전부터는 주황색 계열의 간접 조명을 활용하세요.</p>
-                </div>
-
-                <div class="guide-card">
-                    <div class="icon-wrapper">🛁</div>
-                    <h3>취침 90분 전 체온 반동 활용</h3>
-                    <p>취침 90분 전에 따뜻한 물로 족욕이나 샤워를 하면, 피부 표면을 통해 열이 방출되면서 취침 시점에 체온이 효과적으로 내려갑니다.</p>
-                </div>
-
-                <div class="guide-card">
-                    <div class="icon-wrapper">🧠</div>
-                    <h3>뇌 오프로딩 (브레인 덤프)</h3>
-                    <p>잠들기 전 머릿속을 채우는 걱정이나 내일 할 일을 노트에 3분간 적어보세요. 뇌의 연쇄적인 생각을 멈추고 입면 시간을 단축시킵니다.</p>
+            <div class="method-card">
+                <div class="method-icon">☕</div>
+                <div class="method-content">
+                    <h3>취침 8시간 전 카페인 섭취 중단</h3>
+                    <p>카페인의 반감기는 6~8시간입니다. 오후 2-3시 이후 커피나 차를 피하면 수면의 깊이가 크게 향상됩니다.</p>
                 </div>
             </div>
-        </section>
-    </div>
+
+            <div class="method-card">
+                <div class="method-icon">📱</div>
+                <div class="method-content">
+                    <h3>취침 1시간 전 블루라이트 차단</h3>
+                    <p>스마트폰과 TV의 블루라이트는 뇌를 낮으로 착각하게 만듭니다. 암막 커튼이나 조명 조도를 낮추는 환경을 만들어주세요.</p>
+                </div>
+            </div>
+
+            <div class="method-card">
+                <div class="method-icon">🚿</div>
+                <div class="method-content">
+                    <h3>취침 90분 전 미지근한 물 목욕</h3>
+                    <p>체온이 올라갔다 내려가는 과정에서 입면이 쉬워집니다. 약 38~40도의 물에서 15~20분간 체온을 조절해 보세요.</p>
+                </div>
+            </div>
+
+            <div class="method-card">
+                <div class="method-icon">🍽️</div>
+                <div class="method-content">
+                    <h3>취침 3시간 전 식사 마치기</h3>
+                    <p>야식은 소화 기관을 휴식하지 못하게 해 깊은 잠(서파 수면)을 방해합니다. 속을 비우고 수면을 취하는 것이 피로회복의 핵심입니다.</p>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="showPage('page-result')">결과 페이지로 돌아가기</button>
+        </div>
+    </main>
 
     <footer>
-        <p>© 2026 탑수면 (Top Sleep). All rights reserved.</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #64748B;">본 서비스는 90분 수면 주기 이론(Sleep Cycle) 기반 가이드를 제공하며, 전문적인 의료 진단을 대신하지 않습니다.</p>
+        &copy; 2026 탑수면 (Top Sleep) - Minimalist Sleep Optimizer
     </footer>
 
     <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function parseToMinutes(ampm, hour, min) {
+            let h = parseInt(hour, 10);
+            let m = parseInt(min, 10) || 0;
+
+            if (ampm === 'PM' && h < 12) h += 12;
+            if (ampm === 'AM' && h === 12) h = 0;
+
+            return h * 60 + m;
+        }
+
+        function formatMinutesToTime(totalMinutes) {
+            totalMinutes = (totalMinutes + 1440) % 1440; // Normalize 24h
+            let h = Math.floor(totalMinutes / 60);
+            let m = totalMinutes % 60;
+            let ampm = h >= 12 ? '오후' : '오전';
+
+            let displayH = h % 12;
+            if (displayH === 0) displayH = 12;
+
+            let displayM = m < 10 ? '0' + m : m;
+
+            return `${ampm} ${displayH}시 ${displayM}분`;
+        }
+
         function calculateSleep() {
-            const bedTimeInput = document.getElementById('bedTime').value;
-            const wakeTimeInput = document.getElementById('wakeTime').value;
-            const latency = parseInt(document.getElementById('sleepLatency').value);
+            const sleepAmpm = document.getElementById('sleep-ampm').value;
+            const sleepHour = document.getElementById('sleep-hour').value;
+            const sleepMin = document.getElementById('sleep-min').value;
 
-            if (!bedTimeInput || !wakeTimeInput) {
-                alert('잠드는 시간과 일어나는 시간을 입력해주세요.');
-                return;
-            }
-
-            // Parse hours and minutes
-            const [bedH, bedM] = bedTimeInput.split(':').map(Number);
-            const [wakeH, wakeM] = wakeTimeInput.split(':').map(Number);
+            const wakeAmpm = document.getElementById('wake-ampm').value;
+            const wakeHour = document.getElementById('wake-hour').value;
+            const wakeMin = document.getElementById('wake-min').value;
 
             // Convert to minutes from midnight
-            let bedTotalM = bedH * 60 + bedM;
-            let wakeTotalM = wakeH * 60 + wakeM;
+            let sleepTime = parseToMinutes(sleepAmpm, sleepHour, sleepMin);
+            let wakeTime = parseToMinutes(wakeAmpm, wakeHour, wakeMin);
 
-            // Handle overnight span
-            if (wakeTotalM <= bedTotalM) {
-                wakeTotalM += 24 * 60;
+            // Calculate current sleep duration
+            let sleepDurationMinutes = wakeTime - sleepTime;
+            if (sleepDurationMinutes <= 0) {
+                sleepDurationMinutes += 1440; // overnight sleep
             }
 
-            // Total time in bed
-            let rawDurationMinutes = wakeTotalM - bedTotalM;
-            let actualSleepMinutes = rawDurationMinutes - latency;
+            let durH = Math.floor(sleepDurationMinutes / 60);
+            let durM = sleepDurationMinutes % 60;
 
-            // Sleep cycle is roughly 90 minutes
-            const cycle = 90;
-            
-            // Find closest optimal cycles from wake time
-            // Optimal sleep time = wake time - (N * 90 mins) - latency
-            let bestBedTotalM = bedTotalM;
-            let minDiff = 99999;
-            let bestCycles = 0;
+            document.getElementById('res-current-sleep').textContent = 
+                `${durH}시간 ${durM > 0 ? durM + '분' : ''} (약 ${Math.round(sleepDurationMinutes / 60 * 10) / 10}시간)`;
 
-            for (let c = 3; c <= 7; c++) {
-                let targetBedM = wakeTotalM - (c * cycle) - latency;
-                let diff = Math.abs(targetBedM - bedTotalM);
-                
-                if (diff < minDiff) {
+            // Optimization Logic: Find nearest sleep cycle (90 min = 1.5 hour multiples + 15 min latency)
+            // Sleep cycles: 4.5h (270m), 6.0h (360m), 7.5h (450m), 9.0h (540m) + 15m fall asleep time
+            const cycles = [270 + 15, 360 + 15, 450 + 15, 540 + 15]; // in minutes
+
+            let bestSleepTime = sleepTime;
+            let minDiff = 9999;
+
+            cycles.forEach(cycleDuration => {
+                let candidateSleepTime = wakeTime - cycleDuration;
+                if (candidateSleepTime < 0) candidateSleepTime += 1440;
+
+                // Difference from original sleep time in minutes (-720 to 720)
+                let diff = candidateSleepTime - sleepTime;
+                if (diff > 720) diff -= 1440;
+                if (diff < -720) diff += 1440;
+
+                // Restrict within 60 minutes range (-60 ~ +60)
+                if (Math.abs(diff) <= 60 && Math.abs(diff) < Math.abs(minDiff)) {
                     minDiff = diff;
-                    bestBedTotalM = targetBedM;
-                    bestCycles = c;
+                    bestSleepTime = candidateSleepTime;
                 }
-            }
-
-            // Format optimal bed time
-            let adjustedBedM = (bestBedTotalM + 24 * 60) % (24 * 60);
-            let optH = Math.floor(adjustedBedM / 60);
-            let optM = adjustedBedM % 60;
-            
-            // Format alternative bed time (1 cycle earlier, i.e., 90 mins earlier)
-            let altTotalM = (bestBedTotalM - 90 + 24 * 60) % (24 * 60);
-            let altH = Math.floor(altTotalM / 60);
-            let altM = altTotalM % 60;
-
-            function formatTime(h, m) {
-                let ampm = h >= 12 ? 'PM' : 'AM';
-                let displayH = h % 12;
-                displayH = displayH ? displayH : 12;
-                let displayM = m < 10 ? '0' + m : m;
-                return `${displayH}:${displayM} ${ampm}`;
-            }
-
-            // Display results
-            document.getElementById('recBedTime').innerText = formatTime(optH, optM);
-            document.getElementById('altBedTime').innerText = formatTime(altH, altM);
-
-            const durationHours = (rawDurationMinutes / 60).toFixed(1);
-            document.getElementById('analysisSummary').innerHTML = 
-                `입력하신 수면 시간은 총 <strong>${durationHours}시간</strong>입니다.<br>` +
-                `현재 생체리듬을 크게 흔들지 않는 범위에서 램(REM)수면과 서파수면 주기를 맞춘 <strong>${bestCycles}개 수면 주기(${bestCycles * 1.5}시간)</strong> 시각을 계산했습니다.`;
-
-            // Dynamic Tips
-            const tipList = document.getElementById('tipList');
-            tipList.innerHTML = '';
-
-            let tips = [
-                `현재 기상 시간인 <strong>${wakeTimeInput}</strong>에 렘수면 단계에서 깨어나도록 <strong>${formatTime(optH, optM)}</strong>에 잠자리에 드는 것을 권장합니다.`,
-                `기상 직후 알람을 끄고 다시 자는 '5분 더 자기(Snooze)' 습관은 수면 관성을 악화시키므로 피하는 것이 좋습니다.`
-            ];
-
-            if (latency >= 30) {
-                tips.push(`잠드는 데 시간(${latency}분)이 조금 걸리는 편입니다. 취침 30분 전부터 조명을 낮추고 화면을 멀리하면 입면 시간을 줄일 수 있습니다.`);
-            } else {
-                tips.push(`입면 시간이 양호합니다. 현재의 수면 개시 리듬을 그대로 유지하되 취침 시각만 약 ${Math.abs(Math.round(minDiff))}분 미세 조정해 보세요.`);
-            }
-
-            tips.forEach(tip => {
-                let li = document.createElement('li');
-                li.innerHTML = tip;
-                tipList.appendChild(li);
             });
 
-            // Show result box
-            const resultBox = document.getElementById('resultBox');
-            resultBox.style.display = 'block';
-            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // If no cycle within 60 mins, pick the closest one capped at 60 mins
+            if (minDiff === 9999) {
+                // Find closest cycle generally
+                let closestCycle = cycles[0];
+                let smallestDiff = 9999;
+                cycles.forEach(cycleDuration => {
+                    let cand = wakeTime - cycleDuration;
+                    let diff = cand - sleepTime;
+                    if (diff > 720) diff -= 1440;
+                    if (diff < -720) diff += 1440;
+                    if (Math.abs(diff) < Math.abs(smallestDiff)) {
+                        smallestDiff = diff;
+                    }
+                });
+                let cappedDiff = Math.max(-60, Math.min(60, smallestDiff));
+                bestSleepTime = (sleepTime + cappedDiff + 1440) % 1440;
+            }
+
+            document.getElementById('res-opt-sleep').textContent = formatMinutesToTime(bestSleepTime);
+
+            // Recommended sleep options for wake time (cycles of 7.5h, 6h, 4.5h before wake time)
+            let recTimes = [];
+            [450 + 15, 360 + 15, 270 + 15].forEach((duration, idx) => {
+                let recTime = (wakeTime - duration + 1440) % 1440;
+                let cycleName = idx === 0 ? '7.5시간 수면 (권장)' : (idx === 1 ? '6시간 수면' : '4.5시간 수면');
+                recTimes.push(`• <strong>${formatMinutesToTime(recTime)}</strong> (${cycleName})`);
+            });
+
+            document.getElementById('res-recommended-times').innerHTML = recTimes.join('<br>');
+
+            showPage('page-result');
         }
     </script>
 </body>
 </html>
 """
 
-with open("top_sleep_guide.html", "w", encoding="utf-8") as f:
-    f.write(html_code)
+with open("top_sleep.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
 
-print("HTML file successfully created: top_sleep_guide.html")
+print("HTML file created successfully.")
